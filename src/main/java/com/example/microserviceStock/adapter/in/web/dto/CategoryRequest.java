@@ -1,18 +1,18 @@
-package com.example.microserviceStock.domain.model;
+package com.example.microserviceStock.adapter.in.web.dto;
 
-public class Category {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Category(String name, String description) {
-
-        this.name = name;
-        this.description = description;
-    }
-
-
+@NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
+public class CategoryRequest {
     private String name;
+
     private String description;
-
-
 
     public String getName() {
         return name;
@@ -29,8 +29,4 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
-
-
 }
