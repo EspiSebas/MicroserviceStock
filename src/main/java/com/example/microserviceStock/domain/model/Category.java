@@ -1,8 +1,18 @@
 package com.example.microserviceStock.domain.model;
 
+import com.example.microserviceStock.domain.constants.Rules;
+
 public class Category {
 
     public Category(String name, String description) {
+
+        if(name.length() > Rules.MaxNameCategoryLength){
+            throw new IllegalArgumentException("The name is too long");
+        }
+
+        if(description.length() > Rules.MaxDescriptionCategoryLength){
+            throw new IllegalArgumentException("The description is too long");
+        }
 
         this.name = name;
         this.description = description;

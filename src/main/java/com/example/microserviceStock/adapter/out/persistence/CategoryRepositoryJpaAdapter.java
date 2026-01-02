@@ -2,8 +2,9 @@ package com.example.microserviceStock.adapter.out.persistence;
 
 import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.out.CategoryRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 
@@ -18,6 +19,10 @@ public class CategoryRepositoryJpaAdapter implements CategoryRepository {
 
     @Override
     public Category saveCategory(Category category) {
+        if(jpaCategoryRepository.findByName(category.getName()).isPresent()){
+            throw new IllegalArgumentException("The name is repited");
+
+        };
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setName(category.getName());
         categoryEntity.setDescription(category.getDescription());
@@ -28,4 +33,19 @@ public class CategoryRepositoryJpaAdapter implements CategoryRepository {
                 saved.getDescription()
         );
     }
+
+    @Override
+    public List<Category> findAll() {
+        return jpaCategoryRepository.findAll()
+                .stream()
+                .map(p -> new Category(
+
+                        p.getName(),
+                        p.getDescription()
+
+                ))
+                .toList();
+    }
+
+
 }

@@ -6,6 +6,8 @@ import com.example.microserviceStock.domain.port.in.CreateCategoryUseCase;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
@@ -20,5 +22,8 @@ public class CategoryController {
         return createCategoryUseCase.createCategory(request.getName(), request.getDescription());
     }
 
-
+    @GetMapping("all")
+    public List<Category> getCategories(){
+        return createCategoryUseCase.getCategories();
+    }
 }
