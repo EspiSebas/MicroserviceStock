@@ -1,6 +1,8 @@
 package com.example.microserviceStock.domain.model;
 
 import com.example.microserviceStock.domain.constants.Rules;
+import com.example.microserviceStock.domain.exception.DescriptionException;
+import com.example.microserviceStock.domain.exception.NameException;
 
 public class Brand {
     private String name;
@@ -8,11 +10,11 @@ public class Brand {
 
     public Brand(String name, String description) {
         if(name.length() > Rules.MaxNameBrandLength){
-            throw new IllegalArgumentException("The name is too long");
+            throw new NameException("The name is too long");
         }
 
         if(description.length() > Rules.MaxDescriptionBrandLength){
-            throw new IllegalArgumentException("The description is too long");
+            throw new DescriptionException("The description is too long");
         }
 
         this.name = name;

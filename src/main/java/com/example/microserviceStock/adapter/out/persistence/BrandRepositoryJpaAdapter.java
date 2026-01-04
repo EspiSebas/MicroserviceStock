@@ -1,5 +1,6 @@
 package com.example.microserviceStock.adapter.out.persistence;
 
+import com.example.microserviceStock.domain.exception.NameException;
 import com.example.microserviceStock.domain.model.Brand;
 import com.example.microserviceStock.domain.port.out.BrandRepository;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,7 @@ public class BrandRepositoryJpaAdapter implements BrandRepository {
     @Override
     public Brand saveBrand(Brand brand) {
        if(jpaBrandRepository.findByName(brand.getName()).isPresent()){
-           throw new IllegalArgumentException("The name is repited");
+           throw new NameException("The name is repited");
        }
 
        BrandEntity brandEntity = new BrandEntity();

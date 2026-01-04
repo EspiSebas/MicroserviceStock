@@ -1,5 +1,6 @@
 package com.example.microserviceStock.adapter.out.persistence;
 
+import com.example.microserviceStock.domain.exception.NameException;
 import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.out.CategoryRepository;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,7 @@ public class CategoryRepositoryJpaAdapter implements CategoryRepository {
     @Override
     public Category saveCategory(Category category) {
         if(jpaCategoryRepository.findByName(category.getName()).isPresent()){
-            throw new IllegalArgumentException("The name is repited");
+            throw new NameException("The name is repited");
 
         };
         CategoryEntity categoryEntity = new CategoryEntity();
