@@ -18,6 +18,9 @@ public class ArticleEntity {
     private String description;
     private BigDecimal price;
     private int quantity;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private BrandEntity brand;
     @ManyToMany
     @JoinTable(
             name = "article_category",
@@ -26,9 +29,7 @@ public class ArticleEntity {
     )
     private Set<CategoryEntity> categories = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "brand_id", nullable = false)
-    private BrandEntity brand;
+
 
     public Long getId() {
         return id;

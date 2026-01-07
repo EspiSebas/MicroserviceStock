@@ -4,6 +4,7 @@ import com.example.microserviceStock.domain.model.Article;
 import com.example.microserviceStock.domain.port.out.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,14 +26,16 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
     @Override
     public Article saveArticle(Article article) {
 
-        Set<CategoryEntity> categoriesEntitySet = article.getCategories().stream()
-                .map(jpaCategoryRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+        Set<CategoryEntity> categoriesEntitySet =
+                new HashSet<>(jpaCategoryRepository.findAllById(article.getCategories()));
 
-        BrandEntity getBrand = jpaBrandRepository.findById(article.getBrand()).orElseThrow();
+        if (categoriesEntitySet.isEmpty()) {
+            throw new RuntimeException("Categories not found");
+        }
+
+        BrandEntity getBrand = jpaBrandRepository.findById(article.getBrand()).orElseThrow(() -> new RuntimeException("Brand not found"));
         ArticleEntity articleEntity = new ArticleEntity();
+
         articleEntity.setName(article.getName());
         articleEntity.setDescription(article.getDescription());
         articleEntity.setQuantity(article.getQuantity());
@@ -43,13 +46,16 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
 
         ArticleEntity saved = jpaArticleRepository.save(articleEntity);
 
-        return new Article(
+        return new  Article(
                 saved.getName(),
                 saved.getDescription(),
                 saved.getQuantity(),
                 saved.getPrice(),
-                saved.getCategories(),
-                saved.getBrand()
+                saved.getBrand().getId(),
+                saved.getCategories()
+                        .stream()
+                        .map(CategoryEntity::getId)
+                        .collect(Collectors.toSet())
         );
 
 
@@ -64,11 +70,12 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
                         p.getDescription(),
                         p.getQuantity(),
                         p.getPrice(),
+                        p.getBrand().getId(),
                         p.getCategories()
                                 .stream()
                                 .map(CategoryEntity::getId)
-                                .collect(Collectors.toSet()),
-                        p.getBrand().getId()
+                                .collect(Collectors.toSet())
+
                 ))
                 .toList();
     }

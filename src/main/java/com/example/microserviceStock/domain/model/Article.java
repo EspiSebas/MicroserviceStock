@@ -4,6 +4,8 @@ import com.example.microserviceStock.adapter.out.persistence.BrandEntity;
 import com.example.microserviceStock.adapter.out.persistence.CategoryEntity;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Article {
@@ -11,20 +13,18 @@ public class Article {
     private String description;
     private int quantity;
     private BigDecimal price;
-    private Set<Long> categories;
     private Long brand;
+    private Set<Long> categories = new HashSet<>();
 
-    public Article(String name, String description, int quantity, BigDecimal price, Set<Long> categories, Long brand) {
 
+    public Article(String name, String description, int quantity, BigDecimal price, Long brand,Set<Long> categories) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
-        this.categories = categories;
         this.brand = brand;
-    }
+        this.categories = categories != null ? categories : new HashSet<>();;
 
-    public Article(String name, String description, int quantity, BigDecimal price, Set<CategoryEntity> categories, BrandEntity brand) {
     }
 
 
