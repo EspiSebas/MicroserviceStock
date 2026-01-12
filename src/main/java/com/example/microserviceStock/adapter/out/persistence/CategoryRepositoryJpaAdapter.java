@@ -3,6 +3,8 @@ package com.example.microserviceStock.adapter.out.persistence;
 import com.example.microserviceStock.domain.exception.NameException;
 import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.out.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,16 +38,14 @@ public class CategoryRepositoryJpaAdapter implements CategoryRepository {
     }
 
     @Override
-    public List<Category> findAll() {
-        return jpaCategoryRepository.findAll()
-                .stream()
+    public Page<Category> findAll(Pageable pageable) {
+        return jpaCategoryRepository.findAll(pageable)
                 .map(p -> new Category(
 
                         p.getName(),
                         p.getDescription()
 
-                ))
-                .toList();
+                ));
     }
 
 

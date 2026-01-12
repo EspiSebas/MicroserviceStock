@@ -20,4 +20,6 @@ public class ArticleDto {
     private BigDecimal price;
     private BrandDto brand;
     private List<CategoryDto> categories;
+
+
 }

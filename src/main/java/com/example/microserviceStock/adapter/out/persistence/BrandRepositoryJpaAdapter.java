@@ -3,6 +3,8 @@ package com.example.microserviceStock.adapter.out.persistence;
 import com.example.microserviceStock.domain.exception.NameException;
 import com.example.microserviceStock.domain.model.Brand;
 import com.example.microserviceStock.domain.port.out.BrandRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,13 +39,11 @@ public class BrandRepositoryJpaAdapter implements BrandRepository {
     }
 
     @Override
-    public List<Brand> getAllBrand() {
-        return jpaBrandRepository.findAll()
-                .stream()
+    public Page<Brand> getAllBrand(Pageable pageable) {
+        return jpaBrandRepository.findAll(pageable)
                 .map(p-> new Brand(
                         p.getName(),
                         p.getDescription()
-                ))
-                .toList();
+                ));
     }
 }

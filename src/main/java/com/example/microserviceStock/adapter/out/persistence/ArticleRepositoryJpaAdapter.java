@@ -1,7 +1,11 @@
 package com.example.microserviceStock.adapter.out.persistence;
 
+import com.example.microserviceStock.adapter.in.web.dto.ArticleDto;
 import com.example.microserviceStock.domain.model.Article;
+import com.example.microserviceStock.domain.model.Brand;
 import com.example.microserviceStock.domain.port.out.ArticleRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
@@ -62,9 +66,8 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
     }
 
     @Override
-    public List<Article> getAllArticles() {
-        return jpaArticleRepository.findAll()
-                .stream()
+    public Page<Article> getAllArticles(Pageable pageable) {
+        return jpaArticleRepository.findAll(pageable)
                 .map(p-> new Article(
                         p.getName(),
                         p.getDescription(),
@@ -76,8 +79,8 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
                                 .map(CategoryEntity::getId)
                                 .collect(Collectors.toSet())
 
-                ))
-                .toList();
+                ));
+
     }
 
 

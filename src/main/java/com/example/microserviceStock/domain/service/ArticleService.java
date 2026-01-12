@@ -4,6 +4,8 @@ import com.example.microserviceStock.adapter.in.web.dto.ArticleRequest;
 import com.example.microserviceStock.domain.model.Article;
 import com.example.microserviceStock.domain.port.in.CreateArticleUseCase;
 import com.example.microserviceStock.domain.port.out.ArticleRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,8 +27,8 @@ public class ArticleService implements CreateArticleUseCase {
     }
 
     @Override
-    public List<Article> getAllArticles() {
-        return articleRepository.getAllArticles();
+    public Page<Article> getAllArticles(Pageable pageable) {
+        return articleRepository.getAllArticles(pageable);
     }
 
     @Override

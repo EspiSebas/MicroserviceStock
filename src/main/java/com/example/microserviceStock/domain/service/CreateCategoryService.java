@@ -3,6 +3,8 @@ package com.example.microserviceStock.domain.service;
 import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.in.CreateCategoryUseCase;
 import com.example.microserviceStock.domain.port.out.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class CreateCategoryService implements CreateCategoryUseCase {
     }
 
     @Override
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public Page<Category> getCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
     }
 
 
