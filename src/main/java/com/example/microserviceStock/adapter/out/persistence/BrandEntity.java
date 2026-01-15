@@ -1,6 +1,10 @@
 package com.example.microserviceStock.adapter.out.persistence;
 
+import com.example.microserviceStock.domain.model.Article;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "brands")
@@ -11,11 +15,14 @@ public class BrandEntity {
 
     private String name;
     private String description;
+    @OneToMany(mappedBy = "brand")
+    private Set<ArticleEntity> articles = new HashSet<>();
 
-    public BrandEntity(Long id, String name, String description) {
+    public BrandEntity(Long id, String name, String description, Set<ArticleEntity> articles) {
         Id = id;
         this.name = name;
         this.description = description;
+        this.articles = articles;
     }
 
     public BrandEntity() {
@@ -44,5 +51,13 @@ public class BrandEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<ArticleEntity> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<ArticleEntity> articles) {
+        this.articles = articles;
     }
 }
