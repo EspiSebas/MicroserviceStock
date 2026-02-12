@@ -6,8 +6,6 @@ import com.example.microserviceStock.domain.port.out.CategoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public class CreateCategoryService implements CreateCategoryUseCase {
     private final CategoryRepository categoryRepository;
 
@@ -17,8 +15,9 @@ public class CreateCategoryService implements CreateCategoryUseCase {
 
 
 
+
     @Override
-    public Category createCategory(String name,String description){
+    public Category createCategory(String name, String description){
         Category category = new Category(name, description);
         return categoryRepository.saveCategory(category);
     }

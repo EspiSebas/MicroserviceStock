@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,18 +25,20 @@ public class ArticleController {
     private final CreateArticleUseCase createArticleUseCase;
 
 
+
     public ArticleController(CreateArticleUseCase createArticleUseCase) {
         this.createArticleUseCase = createArticleUseCase;
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('AUX_STOCK')")
     public ResponseEntity<ApiResponse> createArticle(@RequestBody ArticleRequest articleRequest){
         createArticleUseCase.createArticle(articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("The article is successfully created !!",HttpStatus.CREATED.value()));
     }
 
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public PageDtoResponse<Article> getAllArticle(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

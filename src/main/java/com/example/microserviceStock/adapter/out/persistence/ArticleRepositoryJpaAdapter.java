@@ -1,15 +1,14 @@
 package com.example.microserviceStock.adapter.out.persistence;
 
-import com.example.microserviceStock.adapter.in.web.dto.ArticleDto;
 import com.example.microserviceStock.domain.model.Article;
 import com.example.microserviceStock.domain.model.Brand;
+import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.out.ArticleRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,19 +67,22 @@ public class ArticleRepositoryJpaAdapter implements ArticleRepository {
     @Override
     public Page<Article> getAllArticles(Pageable pageable) {
         return jpaArticleRepository.findAll(pageable)
-                .map(p-> new Article(
+                .map(p -> new Article(
                         p.getName(),
                         p.getDescription(),
                         p.getQuantity(),
                         p.getPrice(),
-                        p.getBrand().getId(),
+                        p.getBrand().getId(), // ← SOLO ID
                         p.getCategories()
                                 .stream()
-                                .map(CategoryEntity::getId)
+                                .map(CategoryEntity::getId) // ← SOLO ID
                                 .collect(Collectors.toSet())
-
                 ));
+    }
 
+    @Override
+    public Optional<Article> findById(Long id) {
+         return null;
     }
 
 

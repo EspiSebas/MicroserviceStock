@@ -75,4 +75,12 @@ public class Article {
     public void setBrand(Long brand) {
         this.brand = brand;
     }
+
+    public void increaseQuantity(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero");
+        }
+
+        this.quantity += amount;
+    }
 }

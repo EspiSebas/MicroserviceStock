@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CreateCategoryUseCase {
     Category createCategory(String name, String description);
+
+
     Page<Category> getCategories(Pageable pageable);
 }

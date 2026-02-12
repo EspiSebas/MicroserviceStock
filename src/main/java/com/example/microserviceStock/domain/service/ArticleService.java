@@ -1,5 +1,6 @@
 package com.example.microserviceStock.domain.service;
 
+import com.example.microserviceStock.adapter.in.web.dto.ArticleDto;
 import com.example.microserviceStock.adapter.in.web.dto.ArticleRequest;
 import com.example.microserviceStock.domain.model.Article;
 import com.example.microserviceStock.domain.port.in.CreateArticleUseCase;
@@ -42,6 +43,16 @@ public class ArticleService implements CreateArticleUseCase {
                 (Set<Long>) articleRequest.getCategoriesIds()
 
         );
+
+        articleRepository.saveArticle(article);
+    }
+
+    @Override
+    public void increaseQuantity(Long articleId, int quantity) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new RuntimeException("Article not found"));
+
+        article.increaseQuantity(quantity); // 🔥 Aquí llamas al dominio
 
         articleRepository.saveArticle(article);
     }

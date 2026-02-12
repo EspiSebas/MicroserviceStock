@@ -15,4 +15,5 @@ public interface CreateArticleUseCase {
     Page<Article> getAllArticles(Pageable pageable);
 
     void createArticle(ArticleRequest articleRequest);
+    void increaseQuantity(Long articleId, int quantity);
 }
