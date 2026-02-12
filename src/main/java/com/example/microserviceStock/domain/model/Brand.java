@@ -5,6 +5,7 @@ import com.example.microserviceStock.domain.exception.DescriptionException;
 import com.example.microserviceStock.domain.exception.NameException;
 
 public class Brand {
+
     private String name;
     private String description;
 
@@ -20,6 +21,7 @@ public class Brand {
         this.name = name;
         this.description = description;
     }
+
 
     public String getDescription() {
         return description;

@@ -1,8 +1,14 @@
 package com.example.microserviceStock.adapter.in.web;
 
 import com.example.microserviceStock.adapter.in.web.dto.CategoryRequest;
+import com.example.microserviceStock.adapter.in.web.dto.PageDtoResponse;
 import com.example.microserviceStock.domain.model.Category;
 import com.example.microserviceStock.domain.port.in.CreateCategoryUseCase;
+import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +32,26 @@ public class CategoryController {
     }
 
     @GetMapping("all")
-    public ResponseEntity<List<Category>> getCategories(){
-        return ResponseEntity.ok(createCategoryUseCase.getCategories());
+    public PageDtoResponse<Category> getCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+
+            ){
+
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<Category> pageResult = createCategoryUseCase.getCategories(pageable);
+
+        return new PageDtoResponse<>(
+                pageResult.getContent(),
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages(),
+                pageResult.isLast()
+        );
     }
+
 }
